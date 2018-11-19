@@ -1,53 +1,38 @@
-(show-paren-mode)  
+
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (package-initialize)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t))
+(exec-path-from-shell-initialize)
+(show-paren-mode)
 (transient-mark-mode t)
-  ;--------------------;
-  ; Enable MATLAB mode ;
-  ; -------------------;
-  (add-to-list 'load-path "~/.emacs.d/")
+
+(setq flycheck-python-pylint-executable "/usr/local/bin/pylint")
+(global-flycheck-mode)
+
   (load-file "~/.emacs.d/themes/cyberpunk-theme.el")
   (load-file "~/.emacs.d/themes/rainbow-delimiters.el")
-  ;(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-  (autoload 'matlab-mode "matlab" "Matlab Editing Mode" t)
-  (add-to-list 'auto-mode-alist '("\\.m$" . matlab-mode))
-  (setq matlab-indent-function t)
-  (global-auto-revert-mode t)  
-  (defun my-matlab-mode-hook ()
-    (setq matlab-indent-function t)  ; if you want function bodies indented
-    (setq fill-column 76)            ; where auto-fill should wrap
-    (turn-on-auto-fill))
-
-  (setq matlab-mode-hook 'my-matlab-mode-hook)
-  (autoload 'matlab-shell "matlab" "Interactive Matlab mode." t)
- ;:* Initialise aucTeX
-     ;:*(require 'tex-site)
-     ;:*=======================
-     ;:* load TeX-toolbar
-     ;:*(require 'tex-toolbar)
-     ;:*=======================
-     ;:* autoload style files
-     (setq TeX-auto-save t)
-     (setq TeX-parse-self t)
-     ;:*=======================
-     ;; The documentstyle command is usually near the beginning.
-     (setq-default TeX-auto-parse-length 200)
-     (setq LaTeX-default-options "a4paper,12pt,german,normalheadings")
-     (setq-default TeX-master t)
-     ;:* 
-     (add-hook 'latex-mode-hook 
-               (function (lambda ()
-                           (local-set-key (quote [228]) (quote "\"a"))
-                           (local-set-key (quote [246]) (quote "\"o"))
-                           (local-set-key (quote [252]) (quote "\"u"))
-                           (local-set-key (quote [223]) (quote "\"s"))
-                           (local-set-key (quote [196]) (quote "\"A"))
-                           (local-set-key (quote [214]) (quote "\"O"))
-                           (local-set-key (quote [220]) (quote "\"U"))
-                                             
-     (setq ispell-extra-args '("-t"))       ; start ispell in TeX mode
-                           )))
+  (require 'rainbow-delimiters)
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa-stable" . "https://stable.melpa.org/packages/"))
+(package-initialize)
 
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.cu\\'" . c++-mode))
 
 (require 'locate)
  (global-set-key (kbd "C-c l") 'locate)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages (quote (exec-path-from-shell flycheck))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
