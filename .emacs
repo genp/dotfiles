@@ -20,6 +20,13 @@
 
 (require 'prettier-js)
 (add-hook 'web-mode-hook 'prettier-js-mode)
+(defun indent-web-mode-hook ()
+  "Hooks for indenting in Web mode."
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+)
+(add-hook 'web-mode-hook  'indent-web-mode-hook)
 (setq prettier-js-args '(
                          "--single-quote" "true"
                          "--print-width" "88"
@@ -80,3 +87,24 @@
   (require 'grep)
   (vc-git-grep (grep-read-regexp) "\\*" (vc-git-root default-directory)))
 (global-set-key (kbd "C-c g") 'git-grep-all-root)
+
+(if (display-graphic-p)
+    (progn
+      (setq initial-frame-alist
+            '(
+              (tool-bar-lines . 0)
+              (width . 200) ; chars
+              (height . 60) ; lines
+              (left . 50)
+              (top . 50)))
+      (setq default-frame-alist
+            '(
+              (tool-bar-lines . 0)
+              (width . 200)
+              (height . 60)
+              (left . 50)
+              (top . 50))))
+  (progn
+    (setq initial-frame-alist '( (tool-bar-lines . 0)))
+    (setq default-frame-alist '( (tool-bar-lines . 0)))))
+(setq inhibit-startup-screen t)
