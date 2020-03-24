@@ -1,14 +1,8 @@
-#!/usr/bin/sh
-
-# make a new user for myself
-export USERNAME='gen'
-adduser $USERNAME
-usermod -aG sudo $USERNAME
-su - $USERNAME
+#!/bin/sh
 
 # Switch to ZSH
 sudo apt install zsh
-chsh -s $(which zsh)
+sudo chsh -s $(which zsh) ubuntu
 
 # Oh My Zsh
 sh -c "$(wget https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
@@ -30,8 +24,5 @@ echo 'plugins=(
   osx
 )' >> ~/.zshrc
 
-echo 'zstyle :omz:plugins:ssh-agent agent-forwarding on' >> ~/.zshrc
-echo 'zstyle :omz:plugins:ssh-agent identities mac_rsa github_rsa trash_rsa' >> ~/.zshrc
-source ~/.zshrc
-
-
+# Setup git attribution
+git config --global --edit
