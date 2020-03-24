@@ -126,14 +126,3 @@ if [  ]; then source <(kubectl completion zsh); fi
 export PATH=$HOME/bin:$PATH
 export AWS_REGION=us-east-1
 export AWS_PROFILE=trash
-
-# Behaves normally, but adds this machine's username to the tag and uses the proper taskrc file
-function trask() {
-  task "$@" +"$USER" rc:~/.taskrc_trash
-}
-
-function trask-all() {
-  task "$@" rc:~/.taskrc_trash
-}
-
-alias trask-me="trask"
