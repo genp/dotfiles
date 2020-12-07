@@ -1,0 +1,94 @@
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+brew cask install google-chrome
+brew cask install iterm2
+brew cask install emacs
+brew cask install slack
+brew cask install spotify
+brew cask install beardedspice # remove itunes as a controlled program
+brew cask install signal
+brew cask install caffeine
+brew cask install zoomus
+brew cask install adobe-acrobat-reader
+brew cask install dropbox
+brew cask install tunnelblick
+brew cask install postman
+brew cask install docker
+brew cask install ngrok
+brew cask install firefox
+brew cask install bluestacks
+
+brew install coreutils findutils
+for gnuutil in /usr/local/opt/**/libexec/gnubin/*; do
+    ln -s $gnuutil /usr/local/gnubin/
+done
+echo "Add /usr/local/gnubin to /etc/paths"
+brew install tmux
+brew install tree
+brew install gh
+brew install mariadb # (for client, R runs server in docker)
+brew install postgres # (for client, projects run pg in docker)
+brew install aspell
+brew install wget
+brew install libgsf # command line tools for OLE2 files
+brew install ffmpeg
+brew install ImageMagick
+brew install ghostscript
+brew install watch
+brew install direnv
+brew install fzf fd
+# json
+brew install fx jq
+# javascript
+brew install yarn
+brew install prettier           # someday make emacs use local bin
+yarn global add eslint
+yarn global add eslint-plugin-react
+# python
+brew install python
+pip install 'python-language-server[all]'
+pip install pyls-mypy
+pip install pyls-isort
+pip install pyls-black
+# shell
+brew install shellcheck
+# cloud CLIs
+brew install aws
+brew install azure-cli
+brew install minio/stable/mc
+# Go
+brew install golang
+(cd && go get github.com/rogpeppe/godef)
+(cd && go get golang.org/x/tools/cmd/guru)
+(cd && go get github.com/nsf/gocode)
+; Maybe all above replaced by: (cd && go get golang.org/x/tools/gopls
+# Rust
+brew install rustup
+rustup-init # move PATH setting from .zprofile to .zshenv
+# dev stuff
+brew install libtool autoconf automake
+brew install boost
+
+
+chsh to zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+copy zsh, ssh, emacs, and git dotfiles.
+
+System Preferences:
+ Trackpad >> Tap to click
+ Accessibility >> Pointer Control >> Trackpad Options >> Enable dragging : three finger drag
+ create 10 spaces
+ Mission Control > uncheck Automatically rearrange Spaces
+ Keyboard > Shortcuts
+  set 1-0 option bindings to get to them
+ Keyboard > Modifier Keys ... > Caps Lock : ^Control
+ Keyboard > Modifier Keys ... > Control : No Action
+ Keyboard > Inout Sources > Show Input menu in menu bar
+ Date & Time > Clock > Show Date
+ Accessibility > Speech > Speak selected text
+ Accessibility > Zoom > Use scroll gesture
+ Accessibility > Zoom > Enable Touch Bar zoom
+ Dock > Automatically Hide and Show Dock
+
+Iterm preferences:
+ Profiles > Keys > Left Option Key: Esc+
+ Right as well?  Is the existing behavior useful?
