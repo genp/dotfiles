@@ -1,8 +1,4 @@
-
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (package-initialize)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t))
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (exec-path-from-shell-initialize)
 (show-paren-mode)
 (transient-mark-mode t)
@@ -55,12 +51,10 @@
  '(ansi-color-names-vector
    ["#000000" "#8b0000" "#00ff00" "#ffa500" "#7b68ee" "#dc8cc3" "#93e0e3" "#dcdccc"])
  '(custom-safe-themes
-   (quote
-    ("337f680a83de8fd5c66553c94fabf86d272df3c7c477118e203cde9de2b79e0b" "2ecc0e4d1ecb0da607237c2184bcb8a84b1619a5ce1d87ba109ab10d3340b7ec" "83b81b755904cad7c73c1e7d4c1db7ddbbcf007d86d5af6a2dc26cba5aba1c01" default)))
+   '("337f680a83de8fd5c66553c94fabf86d272df3c7c477118e203cde9de2b79e0b" "2ecc0e4d1ecb0da607237c2184bcb8a84b1619a5ce1d87ba109ab10d3340b7ec" "83b81b755904cad7c73c1e7d4c1db7ddbbcf007d86d5af6a2dc26cba5aba1c01" default))
  '(fci-rule-color "#383838")
  '(package-selected-packages
-   (quote
-    (flycheck-ameba web-mode prettier-js exec-path-from-shell flycheck))))
+   '(company-tabnine company flycheck-ameba web-mode prettier-js exec-path-from-shell flycheck)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -93,18 +87,32 @@
       (setq initial-frame-alist
             '(
               (tool-bar-lines . 0)
-              (width . 200) ; chars
-              (height . 60) ; lines
+              (width . 150) ; chars
+              (height . 50) ; lines
               (left . 50)
               (top . 50)))
       (setq default-frame-alist
             '(
               (tool-bar-lines . 0)
-              (width . 200)
-              (height . 60)
+              (width . 150)
+              (height . 50)
               (left . 50)
               (top . 50))))
   (progn
     (setq initial-frame-alist '( (tool-bar-lines . 0)))
     (setq default-frame-alist '( (tool-bar-lines . 0)))))
 (setq inhibit-startup-screen t)
+(add-hook 'after-init-hook 'global-company-mode)
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
+;; and `package-pinned-packages`. Most users will not need or want to do this.
+;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(package-initialize)
+(require 'company-tabnine)
+(add-to-list 'company-backends #'company-tabnine)
+;; Trigger completion immediately.
+(setq company-idle-delay 0)
+
+;; Number the candidates (use M-1, M-2 etc to select completions).
+(setq company-show-numbers t)
