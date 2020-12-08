@@ -116,3 +116,5 @@
 
 ;; Number the candidates (use M-1, M-2 etc to select completions).
 (setq company-show-numbers t)
+(add-hook 'after-init-hook 'global-company-mode)
+(company-complete-selection)
