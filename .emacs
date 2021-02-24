@@ -2,8 +2,55 @@
 (exec-path-from-shell-initialize)
 (show-paren-mode)
 (transient-mark-mode t)
-
 (add-to-list 'load-path "~/.emacs.d/lisp")
+
+(setq custom--inhibit-theme-enable nil)
+
+(defun text-mode-theme-hook ()
+  (require 'color-theme)
+  (color-theme-initialize)
+  (color-theme-cyberpunk))
+
+ (add-hook 'text-mode-hook
+   'text-mode-theme-hook)
+(add-hook 'text-mode-hook 'auto-fill-mode)
+(setq-default fill-column 80)
+(setq ispell-program-name "/usr/local/bin/aspell")
+(setq-default show-trailing-whitespace t)
+
+(defun git-grep-all-root ()
+  "Grep a pattern across the entire repository."
+  (interactive)
+  (require 'grep)
+  (vc-git-grep (grep-read-regexp) "\\*" (vc-git-root default-directory)))
+(global-set-key (kbd "C-c g") 'git-grep-all-root)
+
+(if (display-graphic-p)
+    (progn
+      (setq initial-frame-alist
+            '(
+              (tool-bar-lines . 0)
+              (width . 150) ; chars
+              (height . 50) ; lines
+              (left . 50)
+              (top . 50)))
+      (setq default-frame-alist
+            '(
+              (tool-bar-lines . 0)
+              (width . 150)
+              (height . 50)
+              (left . 50)
+              (top . 50))))
+  (progn
+    (setq initial-frame-alist '( (tool-bar-lines . 0)))
+    (setq default-frame-alist '( (tool-bar-lines . 0)))))
+(setq inhibit-startup-screen t)
+
+;; Set default open file directory
+(setq default-directory (concat (getenv "HOME") "/"))
+
+;;Startup with only one buffer showing
+(setq inhibit-startup-screen t)
 
 (setq web-mode-content-types-alist
       '(("jsx" . "\\.js[x]?\\'")))
@@ -54,7 +101,7 @@
    '("337f680a83de8fd5c66553c94fabf86d272df3c7c477118e203cde9de2b79e0b" "2ecc0e4d1ecb0da607237c2184bcb8a84b1619a5ce1d87ba109ab10d3340b7ec" "83b81b755904cad7c73c1e7d4c1db7ddbbcf007d86d5af6a2dc26cba5aba1c01" default))
  '(fci-rule-color "#383838")
  '(package-selected-packages
-   '(company-tabnine company flycheck-ameba web-mode prettier-js exec-path-from-shell flycheck)))
+   '(find-file-in-repository magit use-package company-tabnine company flycheck-ameba web-mode prettier-js exec-path-from-shell flycheck)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -63,45 +110,7 @@
  )
 (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
 
-(defun text-mode-theme-hook ()
-  (require 'color-theme)
-  (color-theme-initialize)
-  (color-theme-adwaita))
 
- (add-hook 'text-mode-hook
-   'text-mode-theme-hook)
-(add-hook 'text-mode-hook 'auto-fill-mode)
-(setq-default fill-column 80)
-(setq ispell-program-name "/usr/local/bin/aspell")
-(setq-default show-trailing-whitespace t)
-
-(defun git-grep-all-root ()
-  "Grep a pattern across the entire repository."
-  (interactive)
-  (require 'grep)
-  (vc-git-grep (grep-read-regexp) "\\*" (vc-git-root default-directory)))
-(global-set-key (kbd "C-c g") 'git-grep-all-root)
-
-(if (display-graphic-p)
-    (progn
-      (setq initial-frame-alist
-            '(
-              (tool-bar-lines . 0)
-              (width . 150) ; chars
-              (height . 50) ; lines
-              (left . 50)
-              (top . 50)))
-      (setq default-frame-alist
-            '(
-              (tool-bar-lines . 0)
-              (width . 150)
-              (height . 50)
-              (left . 50)
-              (top . 50))))
-  (progn
-    (setq initial-frame-alist '( (tool-bar-lines . 0)))
-    (setq default-frame-alist '( (tool-bar-lines . 0)))))
-(setq inhibit-startup-screen t)
 (add-hook 'after-init-hook 'global-company-mode)
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -117,4 +126,16 @@
 ;; Number the candidates (use M-1, M-2 etc to select completions).
 (setq company-show-numbers t)
 (add-hook 'after-init-hook 'global-company-mode)
-(company-complete-selection)
+
+;; Magit
+(use-package magit
+  :ensure t
+  :bind (("C-x g" . magit-status)
+         ("C-x f" . magit-file-dispatch))
+  :init (setq magit-completing-read-function 'magit-ido-completing-read))
+(require 'vc)
+(require 'vc-git)
+
+;; fast file find in git repository
+(use-package find-file-in-repository :ensure t
+  :bind (("C-x C-f" . find-file-in-repository)))
