@@ -9,7 +9,8 @@
 (defun text-mode-theme-hook ()
   (require 'color-theme)
   (color-theme-initialize)
-  (color-theme-cyberpunk))
+  (color-theme-leuven))
+  ;; (color-theme-cyberpunk))
 
  (add-hook 'text-mode-hook
    'text-mode-theme-hook)
@@ -98,16 +99,16 @@
  '(ansi-color-names-vector
    ["#000000" "#8b0000" "#00ff00" "#ffa500" "#7b68ee" "#dc8cc3" "#93e0e3" "#dcdccc"])
  '(custom-safe-themes
-   '("337f680a83de8fd5c66553c94fabf86d272df3c7c477118e203cde9de2b79e0b" "2ecc0e4d1ecb0da607237c2184bcb8a84b1619a5ce1d87ba109ab10d3340b7ec" "83b81b755904cad7c73c1e7d4c1db7ddbbcf007d86d5af6a2dc26cba5aba1c01" default))
+   '("9b59e147dbbde5e638ea1cde5ec0a358d5f269d27bd2b893a0947c4a867e14c1" "337f680a83de8fd5c66553c94fabf86d272df3c7c477118e203cde9de2b79e0b" "2ecc0e4d1ecb0da607237c2184bcb8a84b1619a5ce1d87ba109ab10d3340b7ec" "83b81b755904cad7c73c1e7d4c1db7ddbbcf007d86d5af6a2dc26cba5aba1c01" default))
  '(fci-rule-color "#383838")
  '(package-selected-packages
-   '(find-file-in-repository magit use-package company-tabnine company flycheck-ameba web-mode prettier-js exec-path-from-shell flycheck)))
+   '(ido-completing-read+ ido-vertical-mode flx-ido sublime-themes find-file-in-repository magit use-package company-tabnine company flycheck-ameba web-mode prettier-js exec-path-from-shell flycheck)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:background nil)))))
 (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc))
 
 
@@ -127,6 +128,25 @@
 (setq company-show-numbers t)
 (add-hook 'after-init-hook 'global-company-mode)
 
+(use-package ido
+  :config
+  (setq ido-everywhere t
+    ido-virtual-buffers t
+    ido-use-faces t
+    ido-default-buffer-method 'selected-window
+    ido-auto-merge-work-directories-length -1)
+  (ido-mode))
+(use-package flx-ido :requires ido :ensure t :config (flx-ido-mode))
+(use-package ido-vertical-mode :requires ido  :ensure t
+  :config
+  (ido-vertical-mode)
+  (setq ido-vertical-define-keys 'C-n-C-p-up-down-left-right))
+(use-package ido-completing-read+ :requires ido :ensure t
+  :config
+  (setq	ido-cr+-max-items 50000)
+  (ido-ubiquitous-mode 1))
+
+
 ;; Magit
 (use-package magit
   :ensure t
@@ -138,4 +158,11 @@
 
 ;; fast file find in git repository
 (use-package find-file-in-repository :ensure t
-  :bind (("C-x C-f" . find-file-in-repository)))
+  :bind (("C-x C-f" . find-file-in-repository))
+  :init 
+  ;; ffir has a recent bug in which they added --recurse-submodules here, but that
+  ;; seems incompatible with -o, so we change the command
+  (add-to-list 'ffir-repository-types
+	       `(".git"   . ,(lambda (dir)
+			       (ffir-shell-command
+				"git ls-files -zco --exclude-standard"     "\0" dir)))))
